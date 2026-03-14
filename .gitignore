@@ -1,0 +1,49 @@
+# ── Environment & Secrets (NEVER commit these) ─────────────────────────────
+functions/.env
+web/.env
+mobile/.env
+**/google-services.json
+**/GoogleService-Info.plist
+**/*service-account*.json
+**/*dialogflow-key*.json
+**/*.keystore
+**/*.jks
+
+# ── Firebase ────────────────────────────────────────────────────────────────
+.firebase/
+firebase-debug.log
+firestore-debug.log
+database-debug.log
+ui-debug.log
+
+# ── Flutter / Dart ──────────────────────────────────────────────────────────
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/.pub-cache/
+mobile/.pub/
+mobile/pubspec.lock
+mobile/**/*.g.dart
+mobile/**/*.freezed.dart
+mobile/coverage/
+
+# ── Node.js ─────────────────────────────────────────────────────────────────
+functions/node_modules/
+functions/.npm
+functions/lib/
+functions/coverage/
+
+# ── React / Vite ────────────────────────────────────────────────────────────
+web/node_modules/
+web/dist/
+web/.vite/
+
+# ── General ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.vscode/settings.json
+.idea/

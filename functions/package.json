@@ -1,0 +1,36 @@
+{
+  "name": "ridesync-functions",
+  "description": "RideSync — Node.js Express API deployed as Firebase Cloud Functions",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "engines": { "node": "18" },
+  "scripts": {
+    "start":  "node src/index.js",
+    "dev":    "nodemon src/index.js",
+    "lint":   "eslint .",
+    "test":   "jest --runInBand",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "express":            "^4.18.2",
+    "firebase-admin":     "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "helmet":             "^7.1.0",
+    "express-rate-limit": "^7.2.0",
+    "joi":                "^17.12.0",
+    "node-cache":         "^5.1.2",
+    "dotenv":             "^16.4.5",
+    "axios":              "^1.6.8",
+    "cors":               "^2.8.5"
+  },
+  "devDependencies": {
+    "jest":               "^29.7.0",
+    "supertest":          "^6.3.4",
+    "nodemon":            "^3.1.0",
+    "eslint":             "^8.57.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/*.test.js"]
+  }
+}

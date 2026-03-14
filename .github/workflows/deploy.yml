@@ -1,0 +1,60 @@
+name: RideSync CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: cd functions && npm ci
+      - name: Run Jest tests
+        run: cd functions && npm test
+
+  test-flutter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+      - name: Get Flutter packages
+        run: cd mobile && flutter pub get
+      - name: Run Flutter analyze
+        run: cd mobile && flutter analyze
+      - name: Run Flutter tests
+        run: cd mobile && flutter test
+      - name: Build APK
+        run: |
+          cd mobile && flutter build apk --release \
+            --split-per-abi \
+            --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }} \
+            --dart-define=GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RideSync-APK
+          path: mobile/build/app/outputs/flutter-apk/*.apk
+
+  deploy:
+    needs: [test-backend, test-flutter]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Deploy Functions to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions,firestore,database,storage
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
