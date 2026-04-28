@@ -1,7 +1,8 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/widgets/ridesync_button.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
+import 'package:ridesync/core/widgets/ridesync_button.dart';
 import '../providers/login_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -32,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft, end: Alignment.bottomRight,
                     colors: [AppColors.primary, AppColors.primaryDark],
@@ -44,7 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Container(
                       width: 52, height: 52,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Icon(Icons.directions_bus_rounded, color: Colors.white, size: 30),
@@ -64,7 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 20, offset: const Offset(0, 4))],
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 20, offset: const Offset(0, 4))],
                 ),
                 child: Form(
                   key: _formKey,
@@ -105,7 +106,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () => Navigator.of(context).pushNamed('/forgot-password'),
+                          onPressed: () => context.push('/forgot-password'),
                           style: TextButton.styleFrom(foregroundColor: AppColors.primary),
                           child: const Text('Forgot Password?', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                         ),
@@ -135,8 +136,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           const Text("Don't have an account? ", style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
                           GestureDetector(
-                            onTap: () => Navigator.of(context).pushNamed('/register'),
-                            child: Text('Sign Up', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 14)),
+                            onTap: () => context.push('/register'),
+                            child: const Text('Sign Up', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 14)),
                           ),
                         ],
                       ),
@@ -159,7 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     filled: true,
     fillColor: const Color(0xFFF8FAFC),
     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.primary, width: 2)),
+    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
     errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error, width: 2)),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

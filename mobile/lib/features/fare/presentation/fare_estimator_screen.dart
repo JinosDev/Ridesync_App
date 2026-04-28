@@ -37,7 +37,7 @@ class _FareEstimatorScreenState extends ConsumerState<FareEstimatorScreen> {
             TextFormField(decoration: const InputDecoration(labelText: 'To Stop'),   onChanged: (v) => setState(() => _toStop   = v)),
             const SizedBox(height: AppDimensions.sm),
             DropdownButtonFormField<String>(
-              value: _class,
+              initialValue: _class,
               items: const [
                 DropdownMenuItem(value: 'NonAC', child: Text('Non-AC')),
                 DropdownMenuItem(value: 'AC',    child: Text('AC')),

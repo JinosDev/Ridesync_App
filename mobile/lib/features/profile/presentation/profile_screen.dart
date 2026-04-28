@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/widgets/ridesync_app_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
+import 'package:go_router/go_router.dart';
+import '../../auth/providers/auth_provider.dart';
 
 /// Profile screen — Figma "Body" (profile) frame.
-class ProfileScreenV2 extends StatelessWidget {
+class ProfileScreenV2 extends ConsumerWidget {
   const ProfileScreenV2({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider).valueOrNull;
+    final role = ref.watch(userRoleProvider);
+    final isGuest = role == UserRole.unauthenticated;
+    final name = isGuest ? 'Guest User' : (authState?.user?.displayName ?? 'User');
+    final email = isGuest ? 'Sign in to access all features' : (authState?.user?.email ?? '');
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SingleChildScrollView(
@@ -27,11 +35,22 @@ class ProfileScreenV2 extends StatelessWidget {
                       const Text('My Profile', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Colors.white)),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          final authState = ref.read(authStateProvider).valueOrNull;
+                          if (authState == null || authState.role == UserRole.unauthenticated) {
+                            context.push('/login');
+                          } else {
+                            // TODO: Add actual edit profile navigation
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile editing coming soon!')));
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                          child: const Text('Edit', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)),
+                          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            ref.watch(authStateProvider).valueOrNull?.role == UserRole.unauthenticated ? 'Sign In' : 'Edit', 
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)
+                          ),
                         ),
                       ),
                     ],
@@ -53,8 +72,8 @@ class ProfileScreenV2 extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 44,
-                            backgroundColor: AppColors.primary.withOpacity(0.15),
-                            child: Icon(Icons.person_rounded, size: 52, color: AppColors.primary),
+                            backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+                            child: const Icon(Icons.person_rounded, size: 52, color: AppColors.primary),
                           ),
                           Positioned(
                             right: 0, bottom: 0,
@@ -68,17 +87,20 @@ class ProfileScreenV2 extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text('John Doe', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+                    Text(name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                     const SizedBox(height: 4),
-                    const Text('john.doe@example.com', style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
+                    Text(email, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text('Passenger', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
+                      child: Text(
+                        role == UserRole.operator ? 'Bus Operator' : 'Passenger', 
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)
+                      ),
                     ),
 
                     const SizedBox(height: 20),
@@ -93,12 +115,14 @@ class ProfileScreenV2 extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: const [
-                          _Stat(value: '24', label: 'Trips'),
+                        children: [
+                          _Stat(value: role == UserRole.operator ? '156' : '24', label: 'Trips'),
                           _StatDivider(),
-                          _Stat(value: 'LKR 3,600', label: 'Spent'),
-                          _StatDivider(),
-                          _Stat(value: '4.8 ⭐', label: 'Rating'),
+                          if (role == UserRole.passenger) ...[
+                            const _Stat(value: 'LKR 3,600', label: 'Spent'),
+                            const _StatDivider(),
+                          ],
+                          const _Stat(value: '4.8 ⭐', label: 'Rating'),
                         ],
                       ),
                     ),
@@ -114,39 +138,57 @@ class ProfileScreenV2 extends StatelessWidget {
                 child: Column(
                   children: [
                     _MenuSection(title: 'Account', items: [
-                      _MenuItem(icon: Icons.person_outline_rounded, label: 'Personal Information'),
-                      _MenuItem(icon: Icons.lock_outline_rounded, label: 'Change Password'),
-                      _MenuItem(icon: Icons.notifications_outlined, label: 'Notification Settings'),
+                      _MenuItem(icon: Icons.person_outline_rounded, label: 'Personal Information', onTap: () {}),
+                      _MenuItem(icon: Icons.lock_outline_rounded, label: 'Change Password', onTap: () {}),
+                      _MenuItem(icon: Icons.notifications_outlined, label: 'Notification Settings', onTap: () {}),
                     ]),
                     const SizedBox(height: 12),
-                    _MenuSection(title: 'Bookings', items: [
-                      _MenuItem(icon: Icons.confirmation_number_outlined, label: 'Booking History'),
-                      _MenuItem(icon: Icons.favorite_border_rounded, label: 'Saved Routes'),
-                    ]),
+                    if (role == UserRole.passenger) ...[
+                      _MenuSection(title: 'Bookings', items: [
+                        _MenuItem(icon: Icons.confirmation_number_outlined, label: 'Booking History', onTap: () => context.push('/booking-history')),
+                        _MenuItem(icon: Icons.favorite_border_rounded, label: 'Saved Routes', onTap: () {}),
+                      ]),
+                    ] else if (role == UserRole.operator) ...[
+                      _MenuSection(title: 'Trip Management', items: [
+                        _MenuItem(icon: Icons.history_rounded, label: 'Trip History', onTap: () {}),
+                        _MenuItem(icon: Icons.bus_alert_rounded, label: 'Maintenance Logs', onTap: () {}),
+                      ]),
+                    ],
                     const SizedBox(height: 12),
                     _MenuSection(title: 'Support', items: [
-                      _MenuItem(icon: Icons.chat_bubble_outline_rounded, label: 'Chat with Assistant'),
-                      _MenuItem(icon: Icons.help_outline_rounded, label: 'Help & FAQ'),
-                      _MenuItem(icon: Icons.star_outline_rounded, label: 'Rate the App'),
+                      _MenuItem(icon: Icons.chat_bubble_outline_rounded, label: 'Chat with Assistant', onTap: () => context.push('/chatbot')),
+                      _MenuItem(icon: Icons.help_outline_rounded, label: 'Help & FAQ', onTap: () {}),
+                      _MenuItem(icon: Icons.star_outline_rounded, label: 'Rate the App', onTap: () {}),
                     ]),
                     const SizedBox(height: 12),
 
-                    // Logout
+                    // Logout / Sign In
                     GestureDetector(
-                      onTap: () => _showLogoutDialog(context),
+                      onTap: () => isGuest ? context.push('/login') : _showLogoutDialog(context),
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppColors.error.withOpacity(0.06),
+                          color: isGuest ? AppColors.primary.withValues(alpha: 0.08) : AppColors.error.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.error.withOpacity(0.2)),
+                          border: Border.all(color: isGuest ? AppColors.primary.withValues(alpha: 0.2) : AppColors.error.withValues(alpha: 0.2)),
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.logout_rounded, color: AppColors.error, size: 22),
+                            Icon(
+                              isGuest ? Icons.login_rounded : Icons.logout_rounded, 
+                              color: isGuest ? AppColors.primary : AppColors.error, 
+                              size: 22
+                            ),
                             const SizedBox(width: 12),
-                            Text('Sign Out', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.error)),
+                            Text(
+                              isGuest ? 'Sign In' : 'Sign Out', 
+                              style: TextStyle(
+                                fontSize: 14, 
+                                fontWeight: FontWeight.w700, 
+                                color: isGuest ? AppColors.primary : AppColors.error
+                              )
+                            ),
                           ],
                         ),
                       ),
@@ -171,7 +213,10 @@ class ProfileScreenV2 extends StatelessWidget {
       actions: [
         TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
         TextButton(
-          onPressed: () { Navigator.pop(context); Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false); },
+          onPressed: () { 
+            Navigator.pop(context); 
+            context.go('/login'); 
+          },
           style: TextButton.styleFrom(foregroundColor: AppColors.error),
           child: const Text('Sign Out', style: TextStyle(fontWeight: FontWeight.w700)),
         ),
@@ -228,9 +273,10 @@ class _MenuSection extends StatelessWidget {
 }
 
 class _MenuItem extends StatelessWidget {
-  const _MenuItem({required this.icon, required this.label});
+  const _MenuItem({required this.icon, required this.label, required this.onTap});
   final IconData icon;
   final String label;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) => ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -241,6 +287,6 @@ class _MenuItem extends StatelessWidget {
     ),
     title: Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textPrimary)),
     trailing: const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textDisabled),
-    onTap: () {},
+    onTap: onTap,
   );
 }

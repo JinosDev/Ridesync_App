@@ -1,8 +1,15 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/widgets/ridesync_button.dart';
-import '../providers/route_provider.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
+import '../../auth/providers/auth_provider.dart';
+import 'schedule_list_screen.dart';
+import 'booking_history_screen.dart';
+import '../../profile/presentation/profile_screen.dart';
+import '../../operator/presentation/operator_home_screen.dart';
+
+/// Home navigation index provider
+final homeTabProvider = StateProvider<int>((ref) => 0);
 
 /// Home screen — Figma "Home" frame.
 /// Shows search bar, quick filters, recent routes, and promo banner.
@@ -13,28 +20,48 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _navIdx = 0;
-
   @override
   Widget build(BuildContext context) {
+    final role = ref.watch(userRoleProvider);
+    final navIdx = ref.watch(homeTabProvider);
+
+    if (role == UserRole.operator) {
+      return const OperatorHomeScreen();
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: _navIdx == 0 ? const _HomeFeed() : _PlaceholderTab(_navIdx),
-      bottomNavigationBar: _buildNavBar(),
+      body: IndexedStack(
+        index: navIdx,
+        children: const [
+          _HomeFeed(),
+          ScheduleListScreen(),
+          BookingHistoryScreen(),
+          _PlaceholderTab(3), // Alerts
+          ProfileScreenV2(),
+        ],
+      ),
+      bottomNavigationBar: _buildNavBar(ref),
+      floatingActionButton: navIdx == 0 ? FloatingActionButton(
+        onPressed: () => context.push('/chatbot'),
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.smart_toy_rounded, color: Colors.white),
+      ) : null,
     );
   }
 
-  Widget _buildNavBar() {
+  Widget _buildNavBar(WidgetRef ref) {
+    final navIdx = ref.watch(homeTabProvider);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 16, offset: const Offset(0, -4))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 16, offset: const Offset(0, -4))],
       ),
       child: SafeArea(
         top: false,
         child: BottomNavigationBar(
-          currentIndex: _navIdx,
-          onTap: (i) => setState(() => _navIdx = i),
+          currentIndex: navIdx,
+          onTap: (i) => ref.read(homeTabProvider.notifier).state = i,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -70,20 +97,25 @@ class _HomeFeed extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
       slivers: [
-        SliverToBoxAdapter(child: _buildHeader(context)),
+        SliverToBoxAdapter(child: _buildHeader(context, ref)),
         SliverToBoxAdapter(child: _buildSearchBar(context)),
-        SliverToBoxAdapter(child: _buildQuickActions()),
+        SliverToBoxAdapter(child: _buildQuickActions(context)),
         SliverToBoxAdapter(child: _buildPromo()),
-        SliverToBoxAdapter(child: _buildSectionHeader('Popular Routes', onSeeAll: () {})),
+        SliverToBoxAdapter(child: _buildSectionHeader('Popular Routes', onSeeAll: () => context.push('/schedule-list'))),
         SliverToBoxAdapter(child: _buildRouteCards(context)),
-        SliverToBoxAdapter(child: _buildSectionHeader('Recent Trips', onSeeAll: () {})),
+        SliverToBoxAdapter(child: _buildSectionHeader('Recent Trips', onSeeAll: () => context.push('/booking-history'))),
         ..._recentTrips().map((t) => SliverToBoxAdapter(child: _TripTile(data: t))),
         const SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider).valueOrNull;
+    final isGuest = authState == null || authState.role == UserRole.unauthenticated;
+    final name = isGuest ? 'Guest User' : (authState.user?.displayName ?? 'Passenger');
+    final initials = isGuest ? 'GU' : name.substring(0, name.contains(' ') ? 1 : 1).toUpperCase(); // simplified initials
+
     return Container(
       color: AppColors.primary,
       child: SafeArea(
@@ -93,18 +125,23 @@ class _HomeFeed extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Good Morning 👋', style: TextStyle(fontSize: 13, color: Colors.white70)),
-                  SizedBox(height: 2),
-                  Text('John Doe', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white)),
+                  Text(isGuest ? 'Welcome 👋' : 'Good Morning 👋', style: const TextStyle(fontSize: 13, color: Colors.white70)),
+                  const SizedBox(height: 2),
+                  Text(name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white)),
                 ],
               ),
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.white.withOpacity(0.25),
-                child: const Text('JD', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white)),
+              GestureDetector(
+                onTap: () => ref.read(homeTabProvider.notifier).state = 4,
+                child: CircleAvatar(
+                  radius: 24,
+                  backgroundColor: Colors.white.withValues(alpha: 0.25),
+                  child: isGuest 
+                    ? const Icon(Icons.person_outline_rounded, color: Colors.white)
+                    : Text(initials, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white)),
+                ),
               ),
             ],
           ),
@@ -118,14 +155,14 @@ class _HomeFeed extends ConsumerWidget {
       color: AppColors.primary,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       child: GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed('/schedule-list'),
+        onTap: () => context.push('/schedule-list'),
         child: Container(
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8)],
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 8)],
           ),
           child: const Row(
             children: [
@@ -141,18 +178,23 @@ class _HomeFeed extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuickActions() {
+  Widget _buildQuickActions(BuildContext context) {
     final actions = [
-      (Icons.search_rounded,        'Book Seat',  AppColors.primary),
-      (Icons.directions_bus_rounded, 'Track Bus',  const Color(0xFF3B82F6)),
-      (Icons.receipt_long_rounded,   'My Tickets', const Color(0xFF8B5CF6)),
-      (Icons.calculate_outlined,     'Fare Calc',  const Color(0xFF10B981)),
+      (Icons.search_rounded,        'Book Seat',  AppColors.primary, '/schedule-list'),
+      (Icons.directions_bus_rounded, 'Track Bus',  const Color(0xFF3B82F6), '/tracking'),
+      (Icons.receipt_long_rounded,   'My Tickets', const Color(0xFF8B5CF6), '/booking-history'),
+      (Icons.calculate_outlined,     'Fare Calc',  const Color(0xFF10B981), '/schedule-list'),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: actions.map((a) => _QuickAction(icon: a.$1, label: a.$2, color: a.$3)).toList(),
+        children: actions.map((a) => _QuickAction(
+          icon: a.$1, 
+          label: a.$2, 
+          color: a.$3,
+          onTap: () => context.push(a.$4),
+        )).toList(),
       ),
     );
   }
@@ -163,14 +205,14 @@ class _HomeFeed extends ConsumerWidget {
       height: 110,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
       ),
       child: Stack(
         children: [
-          Positioned(right: -20, top: -20, child: Container(width: 120, height: 120, decoration: BoxDecoration(color: Colors.white.withOpacity(0.08), shape: BoxShape.circle))),
+          Positioned(right: -20, top: -20, child: Container(width: 120, height: 120, decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), shape: BoxShape.circle))),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -189,7 +231,7 @@ class _HomeFeed extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                  child: Text('Grab Deal', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
+                  child: const Text('Grab Deal', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
                 ),
               ],
             ),
@@ -208,7 +250,7 @@ class _HomeFeed extends ConsumerWidget {
           Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
           GestureDetector(
             onTap: onSeeAll,
-            child: Text('See All', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+            child: const Text('See All', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
           ),
         ],
       ),
@@ -238,19 +280,23 @@ class _HomeFeed extends ConsumerWidget {
 
 // ── Sub-widgets ────────────────────────────────────────────────────────────────
 class _QuickAction extends StatelessWidget {
-  const _QuickAction({required this.icon, required this.label, required this.color});
+  const _QuickAction({required this.icon, required this.label, required this.color, required this.onTap});
   final IconData icon; final String label; final Color color;
+  final VoidCallback onTap;
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Container(
-        width: 60, height: 60,
-        decoration: BoxDecoration(color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(16)),
-        child: Icon(icon, color: color, size: 28),
-      ),
-      const SizedBox(height: 8),
-      Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textTitle)),
-    ],
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Column(
+      children: [
+        Container(
+          width: 60, height: 60,
+          decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(16)),
+          child: Icon(icon, color: color, size: 28),
+        ),
+        const SizedBox(height: 8),
+        Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textTitle)),
+      ],
+    ),
   );
 }
 
@@ -266,15 +312,15 @@ class _RouteCard extends StatelessWidget {
       color: AppColors.surface,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(color: AppColors.border),
-      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8)],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-          child: Text(route, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.primary)),
+          decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
+          child: Text(route, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.primary)),
         ),
         const SizedBox(height: 12),
         Row(
@@ -282,7 +328,7 @@ class _RouteCard extends StatelessWidget {
           children: [
             Column(
               children: [
-                Container(width: 8, height: 8, decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle)),
+                Container(width: 8, height: 8, decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle)),
                 Container(width: 1, height: 28, color: AppColors.border),
                 Container(width: 8, height: 8, decoration: BoxDecoration(color: AppColors.textSecondary, borderRadius: BorderRadius.circular(2))),
               ],
@@ -302,11 +348,14 @@ class _RouteCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(fare, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.primary)),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(8)),
-              child: const Text('Book', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white)),
+            Text(fare, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.primary)),
+            GestureDetector(
+              onTap: () => context.push('/schedule-list'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(8)),
+                child: const Text('Book', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white)),
+              ),
             ),
           ],
         ),
@@ -334,7 +383,7 @@ class _TripTile extends StatelessWidget {
           Container(
             width: 44, height: 44,
             decoration: BoxDecoration(
-              color: isConfirmed ? AppColors.primary.withOpacity(0.1) : AppColors.progressTrack,
+              color: isConfirmed ? AppColors.primary.withValues(alpha: 0.1) : AppColors.progressTrack,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(Icons.directions_bus_rounded, color: isConfirmed ? AppColors.primary : AppColors.textDisabled, size: 22),
@@ -353,7 +402,7 @@ class _TripTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: isConfirmed ? AppColors.primary.withOpacity(0.1) : const Color(0xFFF1F5F9),
+              color: isConfirmed ? AppColors.primary.withValues(alpha: 0.1) : const Color(0xFFF1F5F9),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(

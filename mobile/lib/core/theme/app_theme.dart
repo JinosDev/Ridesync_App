@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 class AppTheme {
   AppTheme._();
@@ -17,32 +18,30 @@ class AppTheme {
 
   static ThemeData get light => ThemeData(
     useMaterial3: true,
-    fontFamily: 'PublicSans', // registered in pubspec.yaml as family name
+    textTheme: GoogleFonts.publicSansTextTheme(),
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
       primary:   AppColors.primary,
       secondary: AppColors.accent,
       error:     AppColors.error,
       surface:   AppColors.surface,
-      background: AppColors.background,
     ),
     scaffoldBackgroundColor: AppColors.background,
 
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: AppColors.surface,
       foregroundColor: AppColors.textPrimary,
       elevation: 0,
       centerTitle: false,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      titleTextStyle: TextStyle(
-        fontFamily: 'PublicSans',
+      titleTextStyle: GoogleFonts.publicSans(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: AppColors.textPrimary,
         height: 1.25,
       ),
-      iconTheme: IconThemeData(color: AppColors.textPrimary),
+      iconTheme: const IconThemeData(color: AppColors.textPrimary),
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -52,8 +51,7 @@ class AppTheme {
         minimumSize: const Size.fromHeight(52),
         elevation: 0,
         shape: _btnShape(),
-        textStyle: const TextStyle(
-          fontFamily: 'PublicSans',
+        textStyle: GoogleFonts.publicSans(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.2,
@@ -67,8 +65,7 @@ class AppTheme {
         side: const BorderSide(color: AppColors.primary, width: 1.5),
         minimumSize: const Size.fromHeight(52),
         shape: _btnShape(),
-        textStyle: const TextStyle(
-          fontFamily: 'PublicSans',
+        textStyle: GoogleFonts.publicSans(
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
@@ -78,8 +75,7 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: AppColors.primary,
-        textStyle: const TextStyle(
-          fontFamily: 'PublicSans',
+        textStyle: GoogleFonts.publicSans(
           fontSize: 14,
           fontWeight: FontWeight.w600,
         ),
@@ -95,19 +91,17 @@ class AppTheme {
       errorBorder:    _inputBorder(AppColors.error),
       focusedErrorBorder: _inputBorder(AppColors.error, 2),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      labelStyle: const TextStyle(
+      labelStyle: GoogleFonts.publicSans(
         color: AppColors.textSecondary,
-        fontFamily: 'PublicSans',
         fontSize: 14,
       ),
-      hintStyle: const TextStyle(
+      hintStyle: GoogleFonts.publicSans(
         color: AppColors.textDisabled,
-        fontFamily: 'PublicSans',
         fontSize: 14,
       ),
     ),
 
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -123,16 +117,15 @@ class AppTheme {
     ),
 
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith((s) =>
-          s.contains(MaterialState.selected) ? AppColors.primary : null),
+      fillColor: WidgetStateProperty.resolveWith((s) =>
+          s.contains(WidgetState.selected) ? AppColors.primary : null),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
 
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.background,
-      selectedColor: AppColors.primary.withOpacity(0.12),
-      labelStyle: const TextStyle(
-        fontFamily: 'PublicSans',
+      selectedColor: AppColors.primary.withValues(alpha: 0.12),
+      labelStyle: GoogleFonts.publicSans(
         fontSize: 12,
         fontWeight: FontWeight.w600,
       ),
@@ -143,7 +136,7 @@ class AppTheme {
 
   static ThemeData get dark => ThemeData(
     useMaterial3: true,
-    fontFamily: 'PublicSans',
+    textTheme: GoogleFonts.publicSansTextTheme(ThemeData.dark().textTheme),
     brightness: Brightness.dark,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -151,7 +144,6 @@ class AppTheme {
       secondary: AppColors.accent,
       brightness: Brightness.dark,
       surface: AppColors.surfaceDark,
-      background: AppColors.backgroundDark,
     ),
     scaffoldBackgroundColor: AppColors.backgroundDark,
   );

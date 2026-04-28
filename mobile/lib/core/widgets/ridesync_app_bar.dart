@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Standard RideSync app bar used across all screens.
 /// Shows a back-arrow leading, title + optional subtitle, and an optional trailing widget.

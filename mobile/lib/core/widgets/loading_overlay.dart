@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Full-screen semi-transparent loading overlay
 class LoadingOverlay extends StatelessWidget {
@@ -19,7 +19,7 @@ class LoadingOverlay extends StatelessWidget {
         child,
         if (isLoading)
           Container(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha: 0.4),
             child: const Center(
               child: CircularProgressIndicator(
                 color: AppColors.primary,

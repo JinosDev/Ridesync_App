@@ -12,7 +12,7 @@ class RegisterState {
 class RegisterNotifier extends StateNotifier<RegisterState> {
   RegisterNotifier() : super(const RegisterState());
 
-  Future<void> register({required String name, required String email, required String phone, required String password}) async {
+  Future<void> register({required String name, required String email, required String phone, required String password, String role = 'passenger'}) async {
     state = state.copyWith(isLoading: true);
     // Simulate API call
     await Future.delayed(const Duration(seconds: 2));

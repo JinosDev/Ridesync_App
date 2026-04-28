@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 
 /// Reusable error banner displayed as a SnackBar

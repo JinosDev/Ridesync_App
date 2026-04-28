@@ -16,7 +16,7 @@ class NotificationsScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Notifications')),
       body: notifsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load notifications'),
+        error: (e, _) => const EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load notifications'),
         data: (notifs) => notifs.isEmpty
             ? const EmptyStateWidget(icon: Icons.notifications_off_outlined, title: AppStrings.noNotifications, subtitle: "You're all caught up!")
             : ListView.builder(
@@ -25,7 +25,7 @@ class NotificationsScreen extends ConsumerWidget {
                   final n = notifs[i];
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: n.isRead ? AppColors.background : AppColors.primary.withOpacity(0.1),
+                      backgroundColor: n.isRead ? AppColors.background : AppColors.primary.withValues(alpha: 0.1),
                       child: Icon(_typeIcon(n.type), color: AppColors.primary, size: AppDimensions.iconSm),
                     ),
                     title: Text(n.title, style: TextStyle(fontWeight: n.isRead ? FontWeight.w400 : FontWeight.w600)),

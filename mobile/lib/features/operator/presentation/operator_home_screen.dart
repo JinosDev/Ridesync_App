@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/widgets/empty_state_widget.dart';
 import '../../../router/route_names.dart';
 import '../providers/trip_provider.dart';
@@ -21,7 +20,7 @@ class OperatorHomeScreen extends ConsumerWidget {
       ),
       body: schedulesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error:   (e, _) => EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load schedules'),
+        error:   (e, _) => const EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load schedules'),
         data: (schedules) => schedules.isEmpty
             ? const EmptyStateWidget(icon: Icons.bus_alert, title: 'No schedules today')
             : ListView.builder(

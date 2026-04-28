@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
 /// Empty state placeholder with icon, title, and optional action

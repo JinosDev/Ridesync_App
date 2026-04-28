@@ -1,7 +1,7 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/widgets/ridesync_app_bar.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Schedule List / Search screen — Figma "Search" frame.
 class ScheduleListScreen extends ConsumerStatefulWidget {
@@ -48,7 +48,7 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.of(context).maybePop(),
+                    onTap: () => context.pop(),
                     child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
                   ),
                   const SizedBox(width: 12),
@@ -67,17 +67,17 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
                         children: [
-                          Expanded(child: Divider(color: AppColors.border)),
+                          const Expanded(child: Divider(color: AppColors.border)),
                           GestureDetector(
                             onTap: () => setState(() { final tmp = _from; _from = _to; _to = tmp; }),
                             child: Container(
                               width: 32, height: 32,
                               margin: const EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), shape: BoxShape.circle),
-                              child: Icon(Icons.swap_vert_rounded, color: AppColors.primary, size: 18),
+                              decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), shape: BoxShape.circle),
+                              child: const Icon(Icons.swap_vert_rounded, color: AppColors.primary, size: 18),
                             ),
                           ),
-                          Expanded(child: Divider(color: AppColors.border)),
+                          const Expanded(child: Divider(color: AppColors.border)),
                         ],
                       ),
                     ),
@@ -100,7 +100,7 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
                           firstDate: DateTime.now(),
                           lastDate: DateTime.now().add(const Duration(days: 60)),
                           builder: (ctx, child) => Theme(
-                            data: ThemeData(colorScheme: ColorScheme.light(primary: AppColors.primary)),
+                            data: ThemeData(colorScheme: const ColorScheme.light(primary: AppColors.primary)),
                             child: child!,
                           ),
                         );
@@ -193,7 +193,7 @@ class _ScheduleCard extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8)],
       ),
       child: Column(
         children: [
@@ -221,7 +221,7 @@ class _ScheduleCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(data.fare, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.primary)),
+                  Text(data.fare, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.primary)),
                   const Text('per seat', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
                 ],
               ),
@@ -249,7 +249,7 @@ class _ScheduleCard extends StatelessWidget {
               SizedBox(
                 height: 36,
                 child: ElevatedButton(
-                  onPressed: isFull ? null : () => Navigator.of(context).pushNamed('/seat-picker'),
+                  onPressed: isFull ? null : () => context.push('/seat-picker'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isFull ? AppColors.progressTrack : AppColors.primary,
                     foregroundColor: isFull ? AppColors.textDisabled : Colors.white,
@@ -290,7 +290,10 @@ class _StopField extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     children: [
-      Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textSecondary, width: 32)),
+      SizedBox(
+        width: 32,
+        child: Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+      ),
       const SizedBox(width: 8),
       Expanded(
         child: TextField(
@@ -318,7 +321,7 @@ class _InfoChip extends StatelessWidget {
     child: Container(
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: [
           Icon(icon, color: Colors.white, size: 16),

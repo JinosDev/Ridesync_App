@@ -20,7 +20,7 @@ class TripDashboardScreen extends ConsumerWidget {
     final busId     = authState?.busId ?? '';
 
     return Scaffold(
-      appBar: AppBar(title: Text('Trip Dashboard')),
+      appBar: AppBar(title: const Text('Trip Dashboard')),
       body: Padding(
         padding: const EdgeInsets.all(AppDimensions.md),
         child: Column(

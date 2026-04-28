@@ -1,5 +1,6 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Seat status model
 enum SeatStatus { available, selectedByMe, bookedMale, bookedFemale, disabled }
@@ -125,17 +126,17 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Booking Progress', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textTitle)),
+              Text('Booking Progress', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textTitle)),
               Text('Step 2 of 3', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.primary)),
             ],
           ),
           const SizedBox(height: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(9999),
-            child: LinearProgressIndicator(
+            child: const LinearProgressIndicator(
               value: 2 / 3,
               backgroundColor: AppColors.progressTrack,
               valueColor: AlwaysStoppedAnimation(AppColors.primary),
@@ -143,11 +144,11 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('SEAT SELECTION', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textSecondary, letterSpacing: 0.6)),
-              const Text('Bus Layout: 2+3 Arrangement', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+              Text('SEAT SELECTION', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textSecondary, letterSpacing: 0.6)),
+              Text('Bus Layout: 2+3 Arrangement', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
             ],
           ),
         ],
@@ -157,8 +158,8 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
 
   // ── Legend row ────────────────────────────────────────────────────────────
   Widget _buildLegend() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -180,7 +181,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 4, offset: const Offset(0, 2))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +206,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
             Container(
               width: 40, height: 40,
               decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.steering_wheel_outlined, size: 20, color: AppColors.textSecondary),
+              child: const Icon(Icons.directions_car_filled, size: 20, color: AppColors.textSecondary),
             ),
             const SizedBox(width: 12),
             const Text('Driver Station', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF475569))),
@@ -316,7 +317,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 12, offset: const Offset(0, -4))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, -4))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -328,7 +329,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Selected: Seat $_selectedSeat', style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.textTitle)),
-                  Text('LKR 150', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary, fontSize: 18)),
+                  const Text('LKR 150', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary, fontSize: 18)),
                 ],
               ),
             ),
@@ -336,7 +337,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton(
-              onPressed: hasSelection ? () => Navigator.of(context).pushNamed('/booking-confirm') : null,
+              onPressed: hasSelection ? () => context.push('/booking-confirm') : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: hasSelection ? AppColors.primary : AppColors.progressTrack,
                 foregroundColor: hasSelection ? Colors.white : AppColors.textDisabled,
@@ -372,7 +373,7 @@ class _SeatAppBar extends StatelessWidget {
                 onTap: () => Navigator.of(context).maybePop(),
                 child: Container(
                   width: 40, height: 40,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0xFFF8FAFC)),
+                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFFF8FAFC)),
                   child: const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: AppColors.textPrimary),
                 ),
               ),

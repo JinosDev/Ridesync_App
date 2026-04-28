@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Forgot password screen — Figma "Pass..." frame.
 class ForgotPasswordScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 36),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [AppColors.primary, AppColors.primaryDark], begin: Alignment.topLeft, end: Alignment.bottomRight),
               ),
               child: Column(
@@ -33,7 +33,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onTap: () => Navigator.of(context).maybePop(),
                     child: Container(
                       width: 40, height: 40,
-                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), shape: BoxShape.circle),
                       child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
                     ),
                   ),
@@ -72,7 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           prefixIcon: const Icon(Icons.mail_outline_rounded, size: 20, color: AppColors.textSecondary),
           filled: true, fillColor: AppColors.surface,
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.primary, width: 2)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
@@ -98,8 +98,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       children: [
         Container(
           width: 64, height: 64,
-          decoration: BoxDecoration(color: AppColors.success.withOpacity(0.12), shape: BoxShape.circle),
-          child: Icon(Icons.mark_email_read_outlined, size: 36, color: AppColors.success),
+          decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.12), shape: BoxShape.circle),
+          child: const Icon(Icons.mark_email_read_outlined, size: 36, color: AppColors.success),
         ),
         const SizedBox(height: 16),
         const Text('Check Your Email', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),

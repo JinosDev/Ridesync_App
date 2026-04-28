@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/widgets/ridesync_button.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
+import 'package:ridesync/core/widgets/ridesync_button.dart';
 import '../providers/register_provider.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -18,6 +18,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passCtrl   = TextEditingController();
   bool _obscure = true;
   bool _agreed  = false;
+  String _role = 'passenger'; // 'passenger' or 'operator'
 
   @override
   void dispose() { _nameCtrl.dispose(); _emailCtrl.dispose(); _phoneCtrl.dispose(); _passCtrl.dispose(); super.dispose(); }
@@ -35,7 +36,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(24, 32, 24, 36),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft, end: Alignment.bottomRight,
                     colors: [AppColors.primary, AppColors.primaryDark],
@@ -48,7 +49,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       onTap: () => Navigator.of(context).maybePop(),
                       child: Container(
                         width: 40, height: 40,
-                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), shape: BoxShape.circle),
                         child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
                       ),
                     ),
@@ -57,7 +58,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       children: [
                         Container(
                           width: 52, height: 52,
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(14)),
+                          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(14)),
                           child: const Icon(Icons.person_add_rounded, color: Colors.white, size: 28),
                         ),
                         const SizedBox(width: 16),
@@ -81,13 +82,37 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 20, offset: const Offset(0, 4))],
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 20, offset: const Offset(0, 4))],
                 ),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Role Selector
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _RoleTab(
+                              label: 'Passenger',
+                              icon: Icons.person_rounded,
+                              isSelected: _role == 'passenger',
+                              onTap: () => setState(() => _role = 'passenger'),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _RoleTab(
+                              label: 'Operator',
+                              icon: Icons.directions_bus_rounded,
+                              isSelected: _role == 'operator',
+                              onTap: () => setState(() => _role = 'operator'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+
                       _FieldGroup(
                         label: 'Full Name',
                         child: TextFormField(
@@ -142,12 +167,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                           Expanded(
                             child: RichText(
-                              text: TextSpan(
-                                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                              text: const TextSpan(
+                                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                                 children: [
-                                  const TextSpan(text: 'I agree to the '),
+                                  TextSpan(text: 'I agree to the '),
                                   TextSpan(text: 'Terms of Service', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600)),
-                                  const TextSpan(text: ' and '),
+                                  TextSpan(text: ' and '),
                                   TextSpan(text: 'Privacy Policy', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600)),
                                 ],
                               ),
@@ -168,6 +193,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   email: _emailCtrl.text.trim(),
                                   phone: _phoneCtrl.text.trim(),
                                   password: _passCtrl.text,
+                                  role: _role,
                                 );
                               }
                             : null,
@@ -180,7 +206,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           const Text('Already have an account? ', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                           GestureDetector(
                             onTap: () => Navigator.of(context).maybePop(),
-                            child: Text('Sign In', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 13)),
+                            child: const Text('Sign In', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 13)),
                           ),
                         ],
                       ),
@@ -200,7 +226,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     prefixIcon: Icon(icon, size: 20, color: AppColors.textSecondary), suffixIcon: suffix,
     filled: true, fillColor: const Color(0xFFF8FAFC),
     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.primary, width: 2)),
+    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
     errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
   );
@@ -220,4 +246,35 @@ class _FieldGroup extends StatelessWidget {
       const SizedBox(height: 16),
     ],
   );
+}
+class _RoleTab extends StatelessWidget {
+  const _RoleTab({required this.label, required this.icon, required this.isSelected, required this.onTap});
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border),
+          boxShadow: isSelected ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 4))] : [],
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: isSelected ? Colors.white : AppColors.textSecondary, size: 24),
+            const SizedBox(height: 6),
+            Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: isSelected ? Colors.white : AppColors.textPrimary)),
+          ],
+        ),
+      ),
+    );
+  }
 }

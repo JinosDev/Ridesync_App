@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 
 /// Booking Success screen — Figma "Acc..." success/QR frame.
 /// Shows QR e-ticket.
@@ -24,10 +23,10 @@ class BookingSuccessScreen extends StatelessWidget {
                     Container(
                       width: 80, height: 80,
                       decoration: BoxDecoration(
-                        color: AppColors.success.withOpacity(0.12),
+                        color: AppColors.success.withValues(alpha: 0.12),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.check_circle_rounded, size: 48, color: AppColors.success),
+                      child: const Icon(Icons.check_circle_rounded, size: 48, color: AppColors.success),
                     ),
                     const SizedBox(height: 16),
                     const Text('Booking Confirmed!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
@@ -41,7 +40,7 @@ class BookingSuccessScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.07), blurRadius: 20, offset: const Offset(0, 4))],
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.07), blurRadius: 20, offset: const Offset(0, 4))],
                       ),
                       child: Column(
                         children: [
@@ -49,9 +48,9 @@ class BookingSuccessScreen extends StatelessWidget {
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.primary,
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,7 +66,7 @@ class BookingSuccessScreen extends StatelessWidget {
                                 ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
                                   child: const Text('AC Class', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)),
                                 ),
                               ],
@@ -77,9 +76,9 @@ class BookingSuccessScreen extends StatelessWidget {
                           // Notch divider
                           Row(
                             children: [
-                              Container(width: 20, height: 20, decoration: BoxDecoration(color: AppColors.background, borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)))),
-                              Expanded(child: DashedLine()),
-                              Container(width: 20, height: 20, decoration: BoxDecoration(color: AppColors.background, borderRadius: const BorderRadius.horizontal(left: Radius.circular(10)))),
+                              Container(width: 20, height: 20, decoration: const BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.horizontal(right: Radius.circular(10)))),
+                              const Expanded(child: DashedLine()),
+                              Container(width: 20, height: 20, decoration: const BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.horizontal(left: Radius.circular(10)))),
                             ],
                           ),
 
@@ -88,9 +87,9 @@ class BookingSuccessScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(20),
                             child: Column(
                               children: [
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: const [
+                                  children: [
                                     _TicketDetail(label: 'Date',      value: '15 Mar 2025'),
                                     _TicketDetail(label: 'Departure', value: '09:30 AM'),
                                     _TicketDetail(label: 'Seat',      value: 'Seat 3'),
@@ -104,7 +103,7 @@ class BookingSuccessScreen extends StatelessWidget {
                                     border: Border.all(color: AppColors.border, width: 2),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: Column(
+                                  child: const Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.qr_code_2_rounded, size: 120, color: AppColors.textPrimary),
@@ -114,10 +113,10 @@ class BookingSuccessScreen extends StatelessWidget {
                                 const SizedBox(height: 12),
                                 const Text('TKT-2025-03-15-A3F7', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textSecondary, letterSpacing: 1)),
                                 const SizedBox(height: 16),
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text('Total Paid', style: TextStyle(fontSize: 14, color: AppColors.textSecondary)),
+                                    Text('Total Paid', style: TextStyle(fontSize: 14, color: AppColors.textSecondary)),
                                     Text('LKR 150', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.primary)),
                                   ],
                                 ),
@@ -180,6 +179,8 @@ class _TicketDetail extends StatelessWidget {
 }
 
 class DashedLine extends StatelessWidget {
+  const DashedLine({super.key});
+
   @override
   Widget build(BuildContext context) => SizedBox(
     height: 20,

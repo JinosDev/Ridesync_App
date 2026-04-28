@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:ridesync/core/constants/app_colors.dart';
 import '../providers/tracking_provider.dart';
 
 /// Live Tracking Map screen — Figma "Live..." frame.
@@ -30,7 +30,7 @@ class TrackingMapScreenV2 extends ConsumerWidget {
                     onTap: () => Navigator.of(context).maybePop(),
                     child: Container(
                       width: 40, height: 40,
-                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), shape: BoxShape.circle),
                       child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
                     ),
                   ),
@@ -39,7 +39,7 @@ class TrackingMapScreenV2 extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.12),
+                        color: Colors.white.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Row(
@@ -99,7 +99,7 @@ class _MapPlaceholder extends StatelessWidget {
 class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.white.withOpacity(0.04)..strokeWidth = 1;
+    final paint = Paint()..color = Colors.white.withValues(alpha: 0.04)..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 40) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
@@ -128,12 +128,12 @@ class _LiveBadgeState extends State<_LiveBadge> with SingleTickerProviderStateMi
       decoration: BoxDecoration(
         color: AppColors.gpsActive.withOpacity(0.15 + _ctrl.value * 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gpsActive.withOpacity(0.5)),
+        border: Border.all(color: AppColors.gpsActive.withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(width: 8, height: 8, decoration: BoxDecoration(color: AppColors.gpsActive, shape: BoxShape.circle)),
+          Container(width: 8, height: 8, decoration: const BoxDecoration(color: AppColors.gpsActive, shape: BoxShape.circle)),
           const SizedBox(width: 6),
           const Text('LIVE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Colors.white, letterSpacing: 1)),
         ],
@@ -152,9 +152,9 @@ class _TrackingBottomPanel extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A2332),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: const BoxDecoration(
+        color: Color(0xFF1A2332),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -165,7 +165,7 @@ class _TrackingBottomPanel extends StatelessWidget {
           const SizedBox(height: 16),
 
           // ETA row
-          Row(
+          const Row(
             children: [
               Expanded(
                 child: _InfoTile(
@@ -175,16 +175,16 @@ class _TrackingBottomPanel extends StatelessWidget {
                   color: AppColors.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: _InfoTile(
                   icon: Icons.straighten_rounded,
                   label: 'Distance',
                   value: '4.2 km',
-                  color: const Color(0xFF60A5FA),
+                  color: Color(0xFF60A5FA),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: _InfoTile(
                   icon: Icons.speed_rounded,
@@ -201,7 +201,7 @@ class _TrackingBottomPanel extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.06),
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.white12),
             ),
@@ -209,8 +209,8 @@ class _TrackingBottomPanel extends StatelessWidget {
               children: [
                 Container(
                   width: 36, height: 36,
-                  decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.15), shape: BoxShape.circle),
-                  child: Icon(Icons.place_rounded, color: AppColors.primary, size: 18),
+                  decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.15), shape: BoxShape.circle),
+                  child: const Icon(Icons.place_rounded, color: AppColors.primary, size: 18),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(
@@ -225,8 +225,8 @@ class _TrackingBottomPanel extends StatelessWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                  child: Text('3 stops away', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                  decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+                  child: const Text('3 stops away', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.primary)),
                 ),
               ],
             ),
@@ -236,7 +236,7 @@ class _TrackingBottomPanel extends StatelessWidget {
           // Progress bar
           Row(
             children: [
-              Icon(Icons.circle, size: 10, color: AppColors.primary),
+              const Icon(Icons.circle, size: 10, color: AppColors.primary),
               const SizedBox(width: 8),
               Expanded(
                 child: Container(
@@ -264,14 +264,14 @@ class _TrackingBottomPanel extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.warning.withOpacity(0.12),
+              color: AppColors.warning.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.warning.withOpacity(0.4)),
+              border: Border.all(color: AppColors.warning.withValues(alpha: 0.4)),
             ),
-            child: Row(
+            child: const Row(
               children: [
                 Icon(Icons.signal_cellular_off_rounded, color: AppColors.warning, size: 16),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(child: Text('GPS last updated 15s ago. Position may not be current.', style: TextStyle(fontSize: 11, color: AppColors.warning))),
               ],
             ),
@@ -288,7 +288,7 @@ class _InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(color: Colors.white.withOpacity(0.06), borderRadius: BorderRadius.circular(12)),
+    decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(12)),
     child: Column(
       children: [
         Icon(icon, color: color, size: 20),

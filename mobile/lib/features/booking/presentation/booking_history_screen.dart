@@ -16,7 +16,7 @@ class BookingHistoryScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text(AppStrings.myBookings)),
       body: historyAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load bookings'),
+        error: (e, _) => const EmptyStateWidget(icon: Icons.error_outline, title: 'Failed to load bookings'),
         data: (bookings) => bookings.isEmpty
             ? const EmptyStateWidget(icon: Icons.receipt_long_outlined, title: AppStrings.noBookings, subtitle: 'Your confirmed bookings will appear here')
             : ListView.builder(
