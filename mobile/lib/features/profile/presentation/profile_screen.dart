@@ -117,7 +117,7 @@ class ProfileScreenV2 extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _Stat(value: role == UserRole.operator ? '156' : '24', label: 'Trips'),
-                          _StatDivider(),
+                          const _StatDivider(),
                           if (role == UserRole.passenger) ...[
                             const _Stat(value: 'LKR 3,600', label: 'Spent'),
                             const _StatDivider(),

@@ -123,8 +123,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             email: _emailCtrl.text.trim(),
                             password: _passwordCtrl.text,
                           );
-                          if (loginState.errorMessage != null && mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(loginState.errorMessage!), backgroundColor: AppColors.error));
+                          if (!context.mounted) return;
+                          final newLoginState = ref.read(loginProvider);
+                          if (newLoginState.errorMessage != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(newLoginState.errorMessage!), backgroundColor: AppColors.error));
                           }
                         },
                       ),

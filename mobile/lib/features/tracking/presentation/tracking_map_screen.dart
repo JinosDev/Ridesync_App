@@ -126,7 +126,7 @@ class _LiveBadgeState extends State<_LiveBadge> with SingleTickerProviderStateMi
     builder: (_, __) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.gpsActive.withOpacity(0.15 + _ctrl.value * 0.1),
+        color: AppColors.gpsActive.withValues(alpha: 0.15 + _ctrl.value * 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.gpsActive.withValues(alpha: 0.5)),
       ),

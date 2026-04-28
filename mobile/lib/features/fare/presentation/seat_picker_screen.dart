@@ -259,8 +259,6 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
   }
 
   Widget _buildSeatTile(SeatData seat) {
-    final isMySelected = seat.status == SeatStatus.selectedByMe;
-    final isAvailable  = seat.status == SeatStatus.available;
     final status = _selectedSeat == seat.number ? SeatStatus.selectedByMe : seat.status;
 
     Color bg, border, textColor;

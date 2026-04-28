@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ridesync/core/constants/app_colors.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -184,11 +183,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class _ChatBubble extends StatelessWidget {
+  const _ChatBubble({required this.isBot, required this.text, required this.time});
+
   final bool isBot;
   final String text;
   final String time;
-
-  const _ChatBubble({required this.isBot, required this.text, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -199,10 +198,10 @@ class _ChatBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (isBot) ...[
-            CircleAvatar(
+            const CircleAvatar(
               radius: 16,
-              backgroundColor: const Color(0xFFFFF5F5),
-              child: const Icon(Icons.smart_toy_outlined, color: Color(0xFFED8936), size: 18),
+              backgroundColor: Color(0xFFFFF5F5),
+              child: Icon(Icons.smart_toy_outlined, color: Color(0xFFED8936), size: 18),
             ),
             const SizedBox(width: 8),
           ],
@@ -260,9 +259,10 @@ class _ChatBubble extends StatelessWidget {
 }
 
 class _QuickChip extends StatelessWidget {
+  const _QuickChip({required this.label, required this.onTap});
+
   final String label;
   final VoidCallback onTap;
-  const _QuickChip({required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

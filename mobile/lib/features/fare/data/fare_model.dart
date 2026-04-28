@@ -32,6 +32,6 @@ class FareParams {
   final String fromStop;
   final String toStop;
   final String busClass;
-  @override bool operator ==(Object o) => o is FareParams && scheduleId == o.scheduleId && fromStop == o.fromStop && toStop == o.toStop && busClass == o.busClass;
+  @override bool operator ==(Object other) => other is FareParams && scheduleId == other.scheduleId && fromStop == other.fromStop && toStop == other.toStop && busClass == other.busClass;
   @override int get hashCode => Object.hash(scheduleId, fromStop, toStop, busClass);
 }

@@ -12,7 +12,7 @@ final bookingRepositoryProvider = Provider((ref) => BookingRepository());
 class ScheduleSearchParams {
   const ScheduleSearchParams({required this.from, required this.to, required this.date});
   final String from, to, date;
-  @override bool operator ==(Object o) => o is ScheduleSearchParams && from == o.from && to == o.to && date == o.date;
+  @override bool operator ==(Object other) => other is ScheduleSearchParams && from == other.from && to == other.to && date == other.date;
   @override int get hashCode => Object.hash(from, to, date);
 }
 

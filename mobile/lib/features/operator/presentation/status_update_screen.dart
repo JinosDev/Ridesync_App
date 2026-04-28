@@ -38,7 +38,8 @@ class _StatusUpdateScreenState extends ConsumerState<StatusUpdateScreen> {
               if (_stopCtrl.text.isNotEmpty) {
                 await ref.read(tripProvider.notifier).updateCurrentStop(widget.scheduleId, _stopCtrl.text.trim());
               }
-              if (mounted) Navigator.of(context).pop();
+              if (!context.mounted) return;
+              Navigator.of(context).pop();
             }),
           ],
         ),
