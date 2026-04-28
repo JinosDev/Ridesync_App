@@ -4,8 +4,8 @@ import '../../../core/constants/app_dimensions.dart';
 import '../providers/booking_provider.dart';
 
 class BookingDetailScreen extends ConsumerWidget {
-  final String bookingId;
   const BookingDetailScreen({super.key, required this.bookingId});
+  final String bookingId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(

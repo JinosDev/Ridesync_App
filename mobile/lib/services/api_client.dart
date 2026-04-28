@@ -10,7 +10,7 @@ class ApiClient {
   ApiClient._();
 
   static final _client  = http.Client();
-  static final _baseUrl = Env.apiBaseUrl;
+  static const _baseUrl = Env.apiBaseUrl;
 
   static Future<Map<String, dynamic>> get({
     required String endpoint,

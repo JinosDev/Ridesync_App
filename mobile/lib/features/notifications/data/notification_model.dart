@@ -1,10 +1,4 @@
 class NotificationModel {
-  final String id;
-  final String title;
-  final String body;
-  final String type;   // "booking" | "delay" | "alert" | "promo"
-  final bool isRead;
-  final DateTime? createdAt;
 
   const NotificationModel({
     required this.id,
@@ -24,4 +18,10 @@ class NotificationModel {
         isRead:    json['isRead'] as bool? ?? false,
         createdAt: json['createdAt'] != null ? (json['createdAt'] as dynamic).toDate() : null,
       );
+  final String id;
+  final String title;
+  final String body;
+  final String type;   // "booking" | "delay" | "alert" | "promo"
+  final bool isRead;
+  final DateTime? createdAt;
 }

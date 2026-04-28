@@ -1,57 +1,42 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../services/api_client.dart';
-import '../../../core/constants/api_endpoints.dart';
-import 'auth_provider.dart';
-
-enum LoginStatus { idle, loading, success, error }
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginState {
-  final LoginStatus status;
+
+  const LoginState({
+    this.isLoading = false,
+    this.errorMessage,
+    this.isSuccess = false,
+  });
+  final bool isLoading;
   final String? errorMessage;
-  const LoginState({this.status = LoginStatus.idle, this.errorMessage});
-  LoginState copyWith({LoginStatus? status, String? errorMessage}) =>
-      LoginState(status: status ?? this.status, errorMessage: errorMessage ?? this.errorMessage);
+  final bool isSuccess;
+
+  LoginState copyWith({bool? isLoading, String? errorMessage, bool? isSuccess}) =>
+      LoginState(
+        isLoading: isLoading ?? this.isLoading,
+        errorMessage: errorMessage,
+        isSuccess: isSuccess ?? this.isSuccess,
+      );
 }
 
 class LoginNotifier extends StateNotifier<LoginState> {
   LoginNotifier() : super(const LoginState());
 
-  Future<void> login(String email, String password) async {
-    state = state.copyWith(status: LoginStatus.loading);
+  Future<void> login({required String email, required String password}) async {
+    state = state.copyWith(isLoading: true);
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email.trim(),
+        email: email,
         password: password,
       );
-      state = state.copyWith(status: LoginStatus.success);
+      state = state.copyWith(isLoading: false, isSuccess: true);
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        status: LoginStatus.error,
-        errorMessage: _parseFirebaseError(e.code),
-      );
-    } catch (_) {
-      state = state.copyWith(status: LoginStatus.error, errorMessage: 'An unexpected error occurred.');
-    }
-  }
-
-  Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
-    state = const LoginState();
-  }
-
-  String _parseFirebaseError(String code) {
-    switch (code) {
-      case 'user-not-found':    return 'No account found with this email.';
-      case 'wrong-password':    return 'Incorrect password. Please try again.';
-      case 'invalid-email':     return 'Invalid email address.';
-      case 'user-disabled':     return 'This account has been disabled.';
-      case 'too-many-requests': return 'Too many attempts. Please try again later.';
-      default: return 'Login failed. Please check your credentials.';
+      state = state.copyWith(isLoading: false, errorMessage: e.message);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: 'An unknown error occurred');
     }
   }
 }
 
-final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
-  return LoginNotifier();
-});
+final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) => LoginNotifier());

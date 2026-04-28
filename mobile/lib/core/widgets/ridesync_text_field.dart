@@ -4,16 +4,6 @@ import '../constants/app_dimensions.dart';
 
 /// Branded text input field
 class RideSyncTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String label;
-  final String? hint;
-  final bool obscureText;
-  final TextInputType keyboardType;
-  final FormFieldValidator<String>? validator;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final bool enabled;
-  final int maxLines;
 
   const RideSyncTextField({
     super.key,
@@ -28,6 +18,16 @@ class RideSyncTextField extends StatelessWidget {
     this.enabled = true,
     this.maxLines = 1,
   });
+  final TextEditingController? controller;
+  final String label;
+  final String? hint;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final FormFieldValidator<String>? validator;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final bool enabled;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {

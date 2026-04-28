@@ -3,9 +3,6 @@ import '../constants/app_colors.dart';
 
 /// Booking progress bar widget — "Step X of Y" header used across booking flow.
 class BookingProgressBar extends StatelessWidget {
-  final int currentStep;
-  final int totalSteps;
-  final String stepLabel;
 
   const BookingProgressBar({
     super.key,
@@ -13,6 +10,9 @@ class BookingProgressBar extends StatelessWidget {
     required this.totalSteps,
     required this.stepLabel,
   });
+  final int currentStep;
+  final int totalSteps;
+  final String stepLabel;
 
   @override
   Widget build(BuildContext context) {

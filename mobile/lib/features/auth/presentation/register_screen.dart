@@ -207,9 +207,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 }
 
 class _FieldGroup extends StatelessWidget {
+  const _FieldGroup({required this.label, required this.child});
   final String label;
   final Widget child;
-  const _FieldGroup({required this.label, required this.child});
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,

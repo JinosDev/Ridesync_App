@@ -91,9 +91,9 @@ class _FareEstimatorScreenState extends ConsumerState<FareEstimatorScreen> {
 }
 
 class _FareRow extends StatelessWidget {
+  const _FareRow(this.label, this.value, {this.bold = false});
   final String label, value;
   final bool bold;
-  const _FareRow(this.label, this.value, {this.bold = false});
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: AppDimensions.xs),

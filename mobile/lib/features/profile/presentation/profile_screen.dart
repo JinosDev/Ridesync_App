@@ -181,8 +181,8 @@ class ProfileScreenV2 extends StatelessWidget {
 }
 
 class _Stat extends StatelessWidget {
-  final String value, label;
   const _Stat({required this.value, required this.label});
+  final String value, label;
   @override
   Widget build(BuildContext context) => Column(
     children: [
@@ -200,9 +200,9 @@ class _StatDivider extends StatelessWidget {
 }
 
 class _MenuSection extends StatelessWidget {
+  const _MenuSection({required this.title, required this.items});
   final String title;
   final List<_MenuItem> items;
-  const _MenuSection({required this.title, required this.items});
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,9 +228,9 @@ class _MenuSection extends StatelessWidget {
 }
 
 class _MenuItem extends StatelessWidget {
+  const _MenuItem({required this.icon, required this.label});
   final IconData icon;
   final String label;
-  const _MenuItem({required this.icon, required this.label});
   @override
   Widget build(BuildContext context) => ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

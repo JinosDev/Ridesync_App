@@ -5,21 +5,21 @@ import '../../core/constants/app_colors.dart';
 enum SeatStatus { available, selectedByMe, bookedMale, bookedFemale, disabled }
 
 class SeatData {
+  const SeatData(this.number, this.status);
   final int number;
   final SeatStatus status;
-  const SeatData(this.number, this.status);
 }
 
 /// The full Seat Picker screen — matches Figma "Select Seat" design.
 /// 2+3 bus arrangement with driver station at the front.
 class SeatPickerScreenV2 extends StatefulWidget {
-  final String routeName;
-  final String scheduleId;
   const SeatPickerScreenV2({
     super.key,
     this.routeName = 'Downtown - North Station',
     required this.scheduleId,
   });
+  final String routeName;
+  final String scheduleId;
 
   @override
   State<SeatPickerScreenV2> createState() => _SeatPickerScreenV2State();
@@ -30,53 +30,53 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
 
   // Simulate a seat map — replace with provider data in production
   late final List<SeatData> _seats = [
-    SeatData(1,  SeatStatus.available),
-    SeatData(2,  SeatStatus.bookedMale),
-    SeatData(3,  SeatStatus.selectedByMe),
-    SeatData(4,  SeatStatus.available),
-    SeatData(5,  SeatStatus.available),
+    const SeatData(1,  SeatStatus.available),
+    const SeatData(2,  SeatStatus.bookedMale),
+    const SeatData(3,  SeatStatus.selectedByMe),
+    const SeatData(4,  SeatStatus.available),
+    const SeatData(5,  SeatStatus.available),
 
-    SeatData(6,  SeatStatus.bookedFemale),
-    SeatData(7,  SeatStatus.available),
-    SeatData(8,  SeatStatus.bookedMale),
-    SeatData(9,  SeatStatus.bookedFemale),
-    SeatData(10, SeatStatus.available),
+    const SeatData(6,  SeatStatus.bookedFemale),
+    const SeatData(7,  SeatStatus.available),
+    const SeatData(8,  SeatStatus.bookedMale),
+    const SeatData(9,  SeatStatus.bookedFemale),
+    const SeatData(10, SeatStatus.available),
 
-    SeatData(11, SeatStatus.available),
-    SeatData(12, SeatStatus.available),
-    SeatData(13, SeatStatus.selectedByMe),
-    SeatData(14, SeatStatus.available),
-    SeatData(15, SeatStatus.disabled),
+    const SeatData(11, SeatStatus.available),
+    const SeatData(12, SeatStatus.available),
+    const SeatData(13, SeatStatus.selectedByMe),
+    const SeatData(14, SeatStatus.available),
+    const SeatData(15, SeatStatus.disabled),
 
-    SeatData(16, SeatStatus.available),
-    SeatData(17, SeatStatus.available),
-    SeatData(18, SeatStatus.disabled),
-    SeatData(19, SeatStatus.available),
-    SeatData(20, SeatStatus.available),
+    const SeatData(16, SeatStatus.available),
+    const SeatData(17, SeatStatus.available),
+    const SeatData(18, SeatStatus.disabled),
+    const SeatData(19, SeatStatus.available),
+    const SeatData(20, SeatStatus.available),
 
-    SeatData(21, SeatStatus.available),
-    SeatData(22, SeatStatus.bookedMale),
-    SeatData(23, SeatStatus.selectedByMe),
-    SeatData(24, SeatStatus.available),
-    SeatData(25, SeatStatus.available),
+    const SeatData(21, SeatStatus.available),
+    const SeatData(22, SeatStatus.bookedMale),
+    const SeatData(23, SeatStatus.selectedByMe),
+    const SeatData(24, SeatStatus.available),
+    const SeatData(25, SeatStatus.available),
 
-    SeatData(26, SeatStatus.bookedFemale),
-    SeatData(27, SeatStatus.available),
-    SeatData(28, SeatStatus.bookedMale),
-    SeatData(29, SeatStatus.bookedFemale),
-    SeatData(30, SeatStatus.available),
+    const SeatData(26, SeatStatus.bookedFemale),
+    const SeatData(27, SeatStatus.available),
+    const SeatData(28, SeatStatus.bookedMale),
+    const SeatData(29, SeatStatus.bookedFemale),
+    const SeatData(30, SeatStatus.available),
 
-    SeatData(31, SeatStatus.available),
-    SeatData(32, SeatStatus.available),
-    SeatData(33, SeatStatus.selectedByMe),
-    SeatData(34, SeatStatus.available),
-    SeatData(35, SeatStatus.disabled),
+    const SeatData(31, SeatStatus.available),
+    const SeatData(32, SeatStatus.available),
+    const SeatData(33, SeatStatus.selectedByMe),
+    const SeatData(34, SeatStatus.available),
+    const SeatData(35, SeatStatus.disabled),
 
-    SeatData(36, SeatStatus.available),
-    SeatData(37, SeatStatus.available),
-    SeatData(38, SeatStatus.disabled),
-    SeatData(39, SeatStatus.available),
-    SeatData(40, SeatStatus.available),
+    const SeatData(36, SeatStatus.available),
+    const SeatData(37, SeatStatus.available),
+    const SeatData(38, SeatStatus.disabled),
+    const SeatData(39, SeatStatus.available),
+    const SeatData(40, SeatStatus.available),
   ];
 
   @override
@@ -224,7 +224,7 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
   /// Seats per row: [leftA, leftB, null(aisle), rightA, rightB, rightC]
   List<Widget> _buildSeatRows() {
     final rows = <Widget>[];
-    final seatsPerRow = 5; // 2 left + 3 right (aisle is visual)
+    const seatsPerRow = 5; // 2 left + 3 right (aisle is visual)
     final totalRows = (_seats.length / seatsPerRow).ceil();
 
     for (int row = 0; row < totalRows; row++) {
@@ -352,8 +352,8 @@ class _SeatPickerScreenV2State extends State<SeatPickerScreenV2> {
 
 // ── AppBar widget ─────────────────────────────────────────────────────────────
 class _SeatAppBar extends StatelessWidget {
-  final String routeName;
   const _SeatAppBar({required this.routeName});
+  final String routeName;
 
   @override
   Widget build(BuildContext context) {
@@ -402,9 +402,9 @@ class _SeatAppBar extends StatelessWidget {
 
 // ── Legend chip ────────────────────────────────────────────────────────────────
 class _LegendChip extends StatelessWidget {
+  const _LegendChip({required this.label, required this.bg, required this.border, required this.textColor});
   final String label;
   final Color bg, border, textColor;
-  const _LegendChip({required this.label, required this.bg, required this.border, required this.textColor});
 
   @override
   Widget build(BuildContext context) {

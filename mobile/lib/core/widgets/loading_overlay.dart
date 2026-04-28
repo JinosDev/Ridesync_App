@@ -3,14 +3,14 @@ import '../constants/app_colors.dart';
 
 /// Full-screen semi-transparent loading overlay
 class LoadingOverlay extends StatelessWidget {
-  final bool isLoading;
-  final Widget child;
 
   const LoadingOverlay({
     super.key,
     required this.isLoading,
     required this.child,
   });
+  final bool isLoading;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

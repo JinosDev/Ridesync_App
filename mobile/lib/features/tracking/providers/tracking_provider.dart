@@ -2,11 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BusLocation {
-  final double lat;
-  final double lng;
-  final double speed;
-  final double heading;
-  final int timestamp;
 
   const BusLocation({
     required this.lat,
@@ -15,10 +10,6 @@ class BusLocation {
     required this.heading,
     required this.timestamp,
   });
-
-  /// True if last update was more than 30 seconds ago
-  bool get isStale =>
-      DateTime.now().millisecondsSinceEpoch - timestamp > 30000;
 
   factory BusLocation.fromSnapshot(DataSnapshot snapshot) {
     final data = Map<String, dynamic>.from(snapshot.value as Map);
@@ -30,6 +21,15 @@ class BusLocation {
       timestamp: data['timestamp'] as int,
     );
   }
+  final double lat;
+  final double lng;
+  final double speed;
+  final double heading;
+  final int timestamp;
+
+  /// True if last update was more than 30 seconds ago
+  bool get isStale =>
+      DateTime.now().millisecondsSinceEpoch - timestamp > 30000;
 }
 
 /// Passenger: real-time bus location stream from RTDB

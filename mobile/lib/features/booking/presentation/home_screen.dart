@@ -56,8 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 class _PlaceholderTab extends StatelessWidget {
-  final int idx;
   const _PlaceholderTab(this.idx);
+  final int idx;
   static const labels = ['', 'Search', 'Bookings', 'Notifications', 'Profile'];
   @override
   Widget build(BuildContext context) => Center(child: Text(labels[idx], style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.textTitle)));
@@ -238,8 +238,8 @@ class _HomeFeed extends ConsumerWidget {
 
 // ── Sub-widgets ────────────────────────────────────────────────────────────────
 class _QuickAction extends StatelessWidget {
-  final IconData icon; final String label; final Color color;
   const _QuickAction({required this.icon, required this.label, required this.color});
+  final IconData icon; final String label; final Color color;
   @override
   Widget build(BuildContext context) => Column(
     children: [
@@ -255,8 +255,8 @@ class _QuickAction extends StatelessWidget {
 }
 
 class _RouteCard extends StatelessWidget {
-  final String from, to, route, fare;
   const _RouteCard({required this.from, required this.to, required this.route, required this.fare});
+  final String from, to, route, fare;
   @override
   Widget build(BuildContext context) => Container(
     width: 200,
@@ -316,8 +316,8 @@ class _RouteCard extends StatelessWidget {
 }
 
 class _TripTile extends StatelessWidget {
-  final Map<String, String> data;
   const _TripTile({required this.data});
+  final Map<String, String> data;
   @override
   Widget build(BuildContext context) {
     final isConfirmed = data['status'] == 'confirmed';

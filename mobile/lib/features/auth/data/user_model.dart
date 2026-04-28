@@ -1,12 +1,4 @@
 class UserModel {
-  final String uid;
-  final String name;
-  final String email;
-  final String phone;
-  final String role;         // "passenger" | "operator" | "admin"
-  final String? busId;       // operators only
-  final String? fcmToken;
-  final DateTime? createdAt;
 
   const UserModel({
     required this.uid,
@@ -33,6 +25,14 @@ class UserModel {
           : null,
     );
   }
+  final String uid;
+  final String name;
+  final String email;
+  final String phone;
+  final String role;         // "passenger" | "operator" | "admin"
+  final String? busId;       // operators only
+  final String? fcmToken;
+  final DateTime? createdAt;
 
   Map<String, dynamic> toJson() => {
     'uid':       uid,

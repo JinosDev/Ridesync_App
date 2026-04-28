@@ -5,8 +5,8 @@ import '../../../core/widgets/ridesync_button.dart';
 import '../providers/trip_provider.dart';
 
 class StatusUpdateScreen extends ConsumerStatefulWidget {
-  final String scheduleId;
   const StatusUpdateScreen({super.key, required this.scheduleId});
+  final String scheduleId;
   @override
   ConsumerState<StatusUpdateScreen> createState() => _StatusUpdateScreenState();
 }

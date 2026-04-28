@@ -6,8 +6,8 @@ import '../providers/tracking_provider.dart';
 /// Live Tracking Map screen — Figma "Live..." frame.
 /// Shows real-time bus location on a placeholder map.
 class TrackingMapScreenV2 extends ConsumerWidget {
-  final String scheduleId;
   const TrackingMapScreenV2({super.key, required this.scheduleId});
+  final String scheduleId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,8 +100,12 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.white.withOpacity(0.04)..strokeWidth = 1;
-    for (double x = 0; x < size.width; x += 40) canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    for (double y = 0; y < size.height; y += 40) canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    for (double x = 0; x < size.width; x += 40) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    }
+    for (double y = 0; y < size.height; y += 40) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
   }
   @override bool shouldRepaint(_) => false;
 }
@@ -140,8 +144,8 @@ class _LiveBadgeState extends State<_LiveBadge> with SingleTickerProviderStateMi
 
 // ── Bottom info panel ──────────────────────────────────────────────────────────
 class _TrackingBottomPanel extends StatelessWidget {
-  final AsyncValue<dynamic> tracking;
   const _TrackingBottomPanel({required this.tracking});
+  final AsyncValue<dynamic> tracking;
 
   @override
   Widget build(BuildContext context) {
@@ -279,8 +283,8 @@ class _TrackingBottomPanel extends StatelessWidget {
 }
 
 class _InfoTile extends StatelessWidget {
-  final IconData icon; final String label, value; final Color color;
   const _InfoTile({required this.icon, required this.label, required this.value, required this.color});
+  final IconData icon; final String label, value; final Color color;
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(12),

@@ -1,8 +1,8 @@
 /// Sealed class hierarchy for all possible failure types in the app.
 /// Used as the error type in providers and repositories.
 sealed class AppFailure implements Exception {
-  final String message;
   const AppFailure(this.message);
+  final String message;
 
   @override
   String toString() => message;

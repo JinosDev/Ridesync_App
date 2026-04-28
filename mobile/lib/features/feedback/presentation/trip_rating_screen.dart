@@ -7,8 +7,8 @@ import '../../../core/widgets/ridesync_button.dart';
 import '../../../core/widgets/error_banner.dart';
 
 class TripRatingScreen extends ConsumerStatefulWidget {
-  final String scheduleId;
   const TripRatingScreen({super.key, required this.scheduleId});
+  final String scheduleId;
   @override
   ConsumerState<TripRatingScreen> createState() => _TripRatingScreenState();
 }

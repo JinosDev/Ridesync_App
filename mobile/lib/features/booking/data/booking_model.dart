@@ -1,14 +1,4 @@
 class BookingModel {
-  final String bookingId;
-  final String passengerId;
-  final String scheduleId;
-  final String fromStop;
-  final String toStop;
-  final String seatNo;
-  final double fare;
-  final FareBreakdown fareBreakdown;
-  final String status; // "confirmed" | "cancelled" | "completed"
-  final DateTime bookedAt;
 
   const BookingModel({
     required this.bookingId,
@@ -35,6 +25,16 @@ class BookingModel {
     status:        json['status'] as String,
     bookedAt:      DateTime.parse(json['bookedAt'] as String),
   );
+  final String bookingId;
+  final String passengerId;
+  final String scheduleId;
+  final String fromStop;
+  final String toStop;
+  final String seatNo;
+  final double fare;
+  final FareBreakdown fareBreakdown;
+  final String status; // "confirmed" | "cancelled" | "completed"
+  final DateTime bookedAt;
 
   Map<String, dynamic> toJson() => {
     'bookingId':     bookingId,
@@ -51,11 +51,6 @@ class BookingModel {
 }
 
 class FareBreakdown {
-  final double baseFare;
-  final double segmentKm;
-  final double ratePerKm;
-  final double classMultiplier;
-  final String busClass;
 
   const FareBreakdown({
     required this.baseFare,
@@ -65,8 +60,6 @@ class FareBreakdown {
     required this.busClass,
   });
 
-  double get total => baseFare + (segmentKm * ratePerKm * classMultiplier);
-
   factory FareBreakdown.fromJson(Map<String, dynamic> json) => FareBreakdown(
     baseFare:        (json['baseFare'] as num).toDouble(),
     segmentKm:       (json['segmentKm'] as num).toDouble(),
@@ -74,6 +67,13 @@ class FareBreakdown {
     classMultiplier: (json['classMultiplier'] as num).toDouble(),
     busClass:        json['busClass'] as String,
   );
+  final double baseFare;
+  final double segmentKm;
+  final double ratePerKm;
+  final double classMultiplier;
+  final String busClass;
+
+  double get total => baseFare + (segmentKm * ratePerKm * classMultiplier);
 
   Map<String, dynamic> toJson() => {
     'baseFare': baseFare, 'segmentKm': segmentKm,

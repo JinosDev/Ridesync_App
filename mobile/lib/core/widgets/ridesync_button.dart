@@ -4,12 +4,6 @@ import '../constants/app_dimensions.dart';
 
 /// Branded primary button with loading state
 class RideSyncButton extends StatelessWidget {
-  final String label;
-  final VoidCallback? onPressed;
-  final bool isLoading;
-  final bool isOutlined;
-  final IconData? icon;
-  final Color? color;
 
   const RideSyncButton({
     super.key,
@@ -20,6 +14,12 @@ class RideSyncButton extends StatelessWidget {
     this.icon,
     this.color,
   });
+  final String label;
+  final VoidCallback? onPressed;
+  final bool isLoading;
+  final bool isOutlined;
+  final IconData? icon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {

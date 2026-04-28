@@ -10,8 +10,8 @@ final bookingRepositoryProvider = Provider((ref) => BookingRepository());
 // ── Schedule Search ───────────────────────────────────────────────────────────
 
 class ScheduleSearchParams {
-  final String from, to, date;
   const ScheduleSearchParams({required this.from, required this.to, required this.date});
+  final String from, to, date;
   @override bool operator ==(Object o) => o is ScheduleSearchParams && from == o.from && to == o.to && date == o.date;
   @override int get hashCode => Object.hash(from, to, date);
 }
@@ -31,14 +31,6 @@ final scheduleDetailProvider = FutureProvider.family<ScheduleModel, String>((ref
 enum BookingStatus { idle, loading, success, error }
 
 class BookingState {
-  final BookingStatus status;
-  final String? selectedScheduleId;
-  final String? selectedSeatNo;
-  final String? fromStop;
-  final String? toStop;
-  final double? estimatedFare;
-  final BookingModel? confirmedBooking;
-  final String? errorMessage;
 
   const BookingState({
     this.status           = BookingStatus.idle,
@@ -50,6 +42,14 @@ class BookingState {
     this.confirmedBooking,
     this.errorMessage,
   });
+  final BookingStatus status;
+  final String? selectedScheduleId;
+  final String? selectedSeatNo;
+  final String? fromStop;
+  final String? toStop;
+  final double? estimatedFare;
+  final BookingModel? confirmedBooking;
+  final String? errorMessage;
 
   BookingState copyWith({
     BookingStatus? status, String? selectedScheduleId, String? selectedSeatNo,
@@ -68,8 +68,8 @@ class BookingState {
 }
 
 class BookingNotifier extends StateNotifier<BookingState> {
-  final BookingRepository _repo;
   BookingNotifier(this._repo) : super(const BookingState());
+  final BookingRepository _repo;
 
   void selectSchedule(String id) => state = state.copyWith(selectedScheduleId: id);
   void selectSeat(String seatNo) => state = state.copyWith(selectedSeatNo: seatNo);
@@ -78,7 +78,9 @@ class BookingNotifier extends StateNotifier<BookingState> {
 
   Future<void> confirmBooking() async {
     if (state.selectedScheduleId == null || state.selectedSeatNo == null ||
-        state.fromStop == null || state.toStop == null) return;
+        state.fromStop == null || state.toStop == null) {
+      return;
+    }
     state = state.copyWith(status: BookingStatus.loading);
     try {
       final booking = await _repo.createBooking(

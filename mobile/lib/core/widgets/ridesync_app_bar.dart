@@ -4,11 +4,6 @@ import '../constants/app_colors.dart';
 /// Standard RideSync app bar used across all screens.
 /// Shows a back-arrow leading, title + optional subtitle, and an optional trailing widget.
 class RideSyncAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final String? subtitle;
-  final List<Widget>? actions;
-  final VoidCallback? onBack;
-  final bool showBack;
 
   const RideSyncAppBar({
     super.key,
@@ -18,6 +13,11 @@ class RideSyncAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBack,
     this.showBack = true,
   });
+  final String title;
+  final String? subtitle;
+  final List<Widget>? actions;
+  final VoidCallback? onBack;
+  final bool showBack;
 
   @override
   Size get preferredSize => Size.fromHeight(subtitle != null ? 72 : 60);

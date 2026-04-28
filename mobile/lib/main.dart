@@ -1,44 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-import 'firebase_options.dart';
-import 'router/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'services/hive_service.dart';
-import 'services/fcm_background_handler.dart';
+import 'router/app_router.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  runApp(
+    const ProviderScope(
+      child: RideSyncApp(),
+    ),
   );
-
-  // Register FCM background handler BEFORE runApp
-  FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
-
-  // Initialize Hive offline cache (parallel init)
-  await HiveService.init();
-
-  runApp(const ProviderScope(child: RideSyncApp()));
 }
 
-class RideSyncApp extends ConsumerWidget {
+class RideSyncApp extends StatelessWidget {
   const RideSyncApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(appRouterProvider);
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'RideSync',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      routerConfig: router,
+      themeMode: ThemeMode.light, // Defaulting to light as per Figma
+      routerConfig: appRouter,
     );
   }
 }

@@ -7,8 +7,8 @@ import '../../../router/route_names.dart';
 import '../providers/booking_provider.dart';
 
 class ScheduleDetailScreen extends ConsumerWidget {
-  final String scheduleId;
   const ScheduleDetailScreen({super.key, required this.scheduleId});
+  final String scheduleId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scheduleAsync = ref.watch(scheduleDetailProvider(scheduleId));

@@ -12,11 +12,6 @@ final gpsServiceProvider         = Provider((ref) => GpsService());
 enum TripStatus { idle, active, ended }
 
 class TripState {
-  final TripStatus status;
-  final String? activeScheduleId;
-  final bool isGpsBroadcasting;
-  final int? delayMinutes;
-  final String? currentStop;
 
   const TripState({
     this.status              = TripStatus.idle,
@@ -25,6 +20,11 @@ class TripState {
     this.delayMinutes,
     this.currentStop,
   });
+  final TripStatus status;
+  final String? activeScheduleId;
+  final bool isGpsBroadcasting;
+  final int? delayMinutes;
+  final String? currentStop;
 
   TripState copyWith({
     TripStatus? status, String? activeScheduleId,
@@ -39,10 +39,10 @@ class TripState {
 }
 
 class TripNotifier extends StateNotifier<TripState> {
-  final OperatorRepository _repo;
-  final GpsService _gps;
 
   TripNotifier(this._repo, this._gps) : super(const TripState());
+  final OperatorRepository _repo;
+  final GpsService _gps;
 
   Future<void> startTrip(String scheduleId, String busId) async {
     await _repo.updateScheduleStatus(scheduleId, 'active');

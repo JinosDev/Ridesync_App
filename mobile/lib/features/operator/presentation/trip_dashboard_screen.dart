@@ -10,8 +10,8 @@ import '../providers/trip_provider.dart';
 import '../../../features/auth/providers/auth_provider.dart';
 
 class TripDashboardScreen extends ConsumerWidget {
-  final String scheduleId;
   const TripDashboardScreen({super.key, required this.scheduleId});
+  final String scheduleId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

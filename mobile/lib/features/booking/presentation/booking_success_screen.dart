@@ -167,8 +167,8 @@ class BookingSuccessScreen extends StatelessWidget {
 }
 
 class _TicketDetail extends StatelessWidget {
-  final String label, value;
   const _TicketDetail({required this.label, required this.value});
+  final String label, value;
   @override
   Widget build(BuildContext context) => Column(
     children: [

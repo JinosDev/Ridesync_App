@@ -40,7 +40,7 @@ class BookingConfirmScreenV2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _SectionCard(children: [
-                    _SectionTitle('Trip Details'),
+                    const _SectionTitle('Trip Details'),
                     _DetailRow(icon: Icons.directions_bus_rounded, label: 'Route', value: 'Route 47 — Downtown to North Station'),
                     _DetailRow(icon: Icons.calendar_today_outlined, label: 'Date', value: 'Saturday, 15 Mar 2025'),
                     _DetailRow(icon: Icons.access_time_rounded, label: 'Departure', value: '09:30 AM'),
@@ -51,10 +51,10 @@ class BookingConfirmScreenV2 extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   _SectionCard(children: [
-                    _SectionTitle('Fare Breakdown'),
-                    _FareRow('Base Fare',                  'LKR 20.00'),
-                    _FareRow('Distance (13 km × LKR 5)',   'LKR 65.00'),
-                    _FareRow('AC Class (×1.4)',             'LKR 119.00'),
+                    const _SectionTitle('Fare Breakdown'),
+                    const _FareRow('Base Fare',                  'LKR 20.00'),
+                    const _FareRow('Distance (13 km × LKR 5)',   'LKR 65.00'),
+                    const _FareRow('AC Class (×1.4)',             'LKR 119.00'),
                     const Divider(height: 24, color: AppColors.border),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,7 +67,7 @@ class BookingConfirmScreenV2 extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   _SectionCard(children: [
-                    _SectionTitle('Payment Method'),
+                    const _SectionTitle('Payment Method'),
                     _PaymentOption(icon: Icons.credit_card_outlined, label: 'Card ending in 4242', selected: true),
                     _PaymentOption(icon: Icons.account_balance_wallet_outlined, label: 'RideSync Wallet (LKR 500)', selected: false),
                   ]),
@@ -107,8 +107,8 @@ class BookingConfirmScreenV2 extends StatelessWidget {
 }
 
 class _SectionCard extends StatelessWidget {
-  final List<Widget> children;
   const _SectionCard({required this.children});
+  final List<Widget> children;
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(16),
@@ -123,8 +123,8 @@ class _SectionCard extends StatelessWidget {
 }
 
 class _SectionTitle extends StatelessWidget {
-  final String text;
   const _SectionTitle(this.text);
+  final String text;
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 14),
@@ -133,8 +133,8 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _DetailRow extends StatelessWidget {
-  final IconData icon; final String label, value;
   const _DetailRow({required this.icon, required this.label, required this.value});
+  final IconData icon; final String label, value;
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 12),
@@ -151,8 +151,8 @@ class _DetailRow extends StatelessWidget {
 }
 
 class _FareRow extends StatelessWidget {
-  final String label, value;
   const _FareRow(this.label, this.value);
+  final String label, value;
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 10),
@@ -167,8 +167,8 @@ class _FareRow extends StatelessWidget {
 }
 
 class _PaymentOption extends StatelessWidget {
-  final IconData icon; final String label; final bool selected;
   const _PaymentOption({required this.icon, required this.label, required this.selected});
+  final IconData icon; final String label; final bool selected;
   @override
   Widget build(BuildContext context) => Container(
     margin: const EdgeInsets.only(bottom: 8),

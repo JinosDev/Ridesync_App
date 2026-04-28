@@ -4,15 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum UserRole { passenger, operator, unauthenticated }
 
 class AuthState {
-  final User? user;
-  final UserRole role;
-  final String? busId;
 
   const AuthState({
     required this.user,
     required this.role,
     this.busId,
   });
+  final User? user;
+  final UserRole role;
+  final String? busId;
 }
 
 /// Watches Firebase auth state and resolves the user's role claim.

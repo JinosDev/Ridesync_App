@@ -14,7 +14,7 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
   String _from = '';
   String _to   = '';
   DateTime _date = DateTime.now();
-  int _passengers = 1;
+  final int _passengers = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -145,10 +145,10 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
 
   Widget _buildResults() {
     final schedules = [
-      _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '09:30 AM', arrival: '10:15 AM', busClass: 'AC', seats: 14, fare: 'LKR 150', routeNo: '47'),
-      _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '11:00 AM', arrival: '11:50 AM', busClass: 'NonAC', seats: 5, fare: 'LKR 100', routeNo: '47'),
-      _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '01:30 PM', arrival: '02:20 PM', busClass: 'AC', seats: 0, fare: 'LKR 150', routeNo: '47'),
-      _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '04:00 PM', arrival: '04:45 PM', busClass: 'NonAC', seats: 22, fare: 'LKR 100', routeNo: '47'),
+      const _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '09:30 AM', arrival: '10:15 AM', busClass: 'AC', seats: 14, fare: 'LKR 150', routeNo: '47'),
+      const _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '11:00 AM', arrival: '11:50 AM', busClass: 'NonAC', seats: 5, fare: 'LKR 100', routeNo: '47'),
+      const _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '01:30 PM', arrival: '02:20 PM', busClass: 'AC', seats: 0, fare: 'LKR 150', routeNo: '47'),
+      const _ScheduleInfo(from: 'Downtown', to: 'North Station', departure: '04:00 PM', arrival: '04:45 PM', busClass: 'NonAC', seats: 22, fare: 'LKR 100', routeNo: '47'),
     ];
 
     return ListView(
@@ -175,14 +175,14 @@ class _ScheduleListScreenState extends ConsumerState<ScheduleListScreen> {
 
 // ── Data model ────────────────────────────────────────────────────────────────
 class _ScheduleInfo {
+  const _ScheduleInfo({required this.from, required this.to, required this.departure, required this.arrival, required this.busClass, required this.seats, required this.fare, required this.routeNo});
   final String from, to, departure, arrival, busClass, fare, routeNo;
   final int seats;
-  const _ScheduleInfo({required this.from, required this.to, required this.departure, required this.arrival, required this.busClass, required this.seats, required this.fare, required this.routeNo});
 }
 
 class _ScheduleCard extends StatelessWidget {
-  final _ScheduleInfo data;
   const _ScheduleCard({required this.data});
+  final _ScheduleInfo data;
   @override
   Widget build(BuildContext context) {
     final isFull = data.seats == 0;
@@ -270,8 +270,8 @@ class _ScheduleCard extends StatelessWidget {
 }
 
 class _MetaBadge extends StatelessWidget {
-  final IconData icon; final String label; final Color? color;
   const _MetaBadge({required this.icon, required this.label, this.color});
+  final IconData icon; final String label; final Color? color;
   @override
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
@@ -284,9 +284,9 @@ class _MetaBadge extends StatelessWidget {
 }
 
 class _StopField extends StatelessWidget {
+  const _StopField({required this.label, required this.hint, required this.value, required this.onChanged});
   final String label, hint, value;
   final ValueChanged<String> onChanged;
-  const _StopField({required this.label, required this.hint, required this.value, required this.onChanged});
   @override
   Widget build(BuildContext context) => Row(
     children: [
@@ -310,8 +310,8 @@ class _StopField extends StatelessWidget {
 }
 
 class _InfoChip extends StatelessWidget {
-  final IconData icon; final String label; final VoidCallback onTap;
   const _InfoChip({required this.icon, required this.label, required this.onTap});
+  final IconData icon; final String label; final VoidCallback onTap;
   @override
   Widget build(BuildContext context) => GestureDetector(
     onTap: onTap,

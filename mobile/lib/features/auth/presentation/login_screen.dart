@@ -73,7 +73,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
 
                       // Email
-                      _Label('Email Address'),
+                      const _Label('Email Address'),
                       const SizedBox(height: 6),
                       TextFormField(
                         controller: _emailCtrl,
@@ -84,7 +84,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 16),
 
                       // Password
-                      _Label('Password'),
+                      const _Label('Password'),
                       const SizedBox(height: 6),
                       TextFormField(
                         controller: _passwordCtrl,
@@ -167,8 +167,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 }
 
 class _Label extends StatelessWidget {
-  final String text;
   const _Label(this.text);
+  final String text;
   @override
   Widget build(BuildContext context) => Text(text, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textTitle));
 }
